@@ -1,24 +1,18 @@
 <template>
-    <input type="checkbox" id="switch" @change="func">
-    <label for="switch" class="switch_label">
+    <input type="checkbox" id="switch3" @change="func">
+    <label for="switch3" class="switch_label3">
         <span class="onf_btn"></span>
     </label>
       <label class="label">{{label}}</label>
 </template>
 
 <script setup>
-  //setup
-  //간결한 문법으로 상용구(boilerplate)를 줄일 수 있음
-  //타입스크립트를 사용해 props와 emmited value 선언이 가능
-  //런타임 성능의 향상(템플릿이 setup 스크립트와 같은 스코프(scope)에 있는 render 함수로 컴파일되므로 프록시가 필요없음)
-  //더 뛰어난 IDE 타입 추론 성능 (language 서버가 코드로부터 타입을 추론해내는 데 비용이 덜 든다)
   import { useStore } from 'vuex'
   const props = defineProps({
     label: String
   })
   const store = useStore();
-  //store함수 호출
-  const func = () => store.commit("changePra");
+  const func = () => store.commit("changeGreet");
 </script>
 
 <style>
@@ -26,14 +20,14 @@
   white-space: nowrap;
   color: white;
 }
-#switch {
+#switch3 {
   position: absolute;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
 }
 
-.switch_label {
+.switch_label3 {
   position: relative;
   cursor: pointer;
   display: inline-block;
@@ -44,7 +38,7 @@
   border-radius: 20px;
   transition: 0.2s;
 }
-.switch_label:hover {
+.switch_label3:hover {
   background: #efefef;
 }
 .onf_btn {
@@ -58,15 +52,15 @@
   background: #daa;
   transition: 0.2s;
 }
-#switch:checked+.switch_label {
+#switch3:checked+.switch_label3 {
   background: #c44;
   border: 2px solid #c44;
 }
 
-#switch:checked+.switch_label:hover {
+#switch3:checked+.switch_label3:hover {
   background: #e55;
 }
-#switch:checked+.switch_label .onf_btn {
+#switch3:checked+.switch_label3 .onf_btn {
   left: 34px;
   background: #fff;
   box-shadow: 1px 2px 3px #00000020;

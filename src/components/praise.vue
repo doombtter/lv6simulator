@@ -1,21 +1,49 @@
 <template>
-    <table>
+    <table class="tiletable">
         <tbody>
             <tr>
-            <td class="party1"><h4>4</h4></td><td class="party2"><h4>4</h4></td><td class="party1"><h4>1</h4></td>
+                <td v-for="id in tiles.A" v-bind:key="id" v-bind:class="[(id[1] == 0) ? 'break' : (id[1] == 1) ? 'party1' : 'party2']"><h4>{{id[0]}}</h4></td>
             </tr>
             <tr>
-            <td class="party2"><h4>3</h4></td><td class="break"><h4></h4></td><td class="party2"><h4>1</h4></td>
+                <td v-for="id in tiles.B" v-bind:key="id" v-bind:class="[(id[1] == 0) ? 'break' : (id[1] == 1) ? 'party1' : 'party2']"><h4>{{id[0]}}</h4></td>
             </tr>
             <tr>
-            <td class="party1"><h4>3</h4></td><td class="party2"><h4>2</h4></td><td class="party1"><h4>2</h4></td>
+                <td v-for="id in tiles.C" v-bind:key="id" v-bind:class="[(id[1] == 0) ? 'break' : (id[1] == 1) ? 'party1' : 'party2']"><h4>{{id[0]}}</h4></td>   
             </tr>
         </tbody>
     </table>
 </template>
 
+<script>
+export default{
+    setup(){
+        // v-for, 다중 삼항 연산자
+        let tiles = {
+            A : {
+                A : [4, 1],
+                B : [4, 2],
+                C : [1, 1]
+            },
+            B : {
+                A : [3, 2],
+                B : [null, 0],
+                C : [1, 2]
+            },
+            C : {
+                A : [3, 1],
+                B : [2, 2], 
+                C : [2, 1]
+            },
+        }
+
+        return {tiles}
+    }
+}
+</script>
+
+
 <style>
-table {
+.tiletable {
     transform: rotate(45deg);
 }
 .party1{

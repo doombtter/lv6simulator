@@ -9,6 +9,8 @@ const routes = [
 ];
 
 const router = createRouter({
+    //createWebHashHistory 해시 히스토리 모드 /#/
+    //createWebHistory HTML5 모드, 기본 라우트 사용
     history: createWebHistory(),
     routes,
 });
