@@ -62,7 +62,7 @@
 }
 #switch3:checked+.switch_label3 .onf_btn {
   left: 34px;
-  background: #fff;
-  box-shadow: 1px 2px 3px #00000020;
+  background: #fff; 
+  box-shadow: 1px 2px 3px #00000020; 
 }
-</style>
+</style> 

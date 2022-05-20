@@ -2,17 +2,18 @@
     <div class="section">
         <h4>6관 시뮬레이터</h4>
         <h5>212줄 1문양 / 188줄 맞이하라 / 137줄 노메 / 112줄 찬미 / 80줄 노메 / 40줄 노메 / 32줄 2문양 / 30줄 추락하라</h5>
+        <h5> 파괴된 타일 : {{breakedtile}} <strong v-if="breakedtile >= 4"> GG</strong></h5><resetbtn label="초기화" @click="renderComponent()"></resetbtn>
         <div class="tiles">
             <praise v-if="pra"></praise>
-            <tiles v-if="!pra"></tiles>
+            <tiles ref="tile" v-if="!pra" :key="count"></tiles>
         </div>
         <div class="wrapper">
         <table>
             <tbody>
                 <tr>
                     <td><checkbox label="찬미모드"></checkbox></td>
-                    <td><meteorbtn label="노메On/Off"></meteorbtn></td>
                     <td><greet label="맞이하라"></greet></td>
+                    <td><meteorbtn label="노메On/Off"></meteorbtn></td>
                 </tr>
             </tbody>
         </table>
@@ -38,9 +39,16 @@ export default{
         //store 사용
         const store = useStore();
         const pra = computed(() => store.state.pra);
+        const breakedtile = ref(computed(()=> store.state.breakedtile))
         //내부에 값을 가지면서 반응적이고 변경 가능한 ref 객체를 반환합니다. ref 객체는 단 하나의 프로퍼티를 가지는데, 내부 값을 가리키는 .value 입니다.
         let text = ref()
         let sum = ref("")
+
+        //컴포넌트 함수 호출 용도
+        const tile = ref(null);
+
+        //컴포넌트 리로드
+        const count = ref(0)
 
         //env 사용
         //console.log(process.env)
@@ -65,6 +73,16 @@ export default{
             copyText(sum.value, undefined, () => {text.value = ""})
         }
 
+        const run = () => {
+            tile.value.reset();
+        }
+
+        const renderComponent = () => {
+            store.commit("btreset");
+            tile.value.reset();
+            count.value++
+        }
+
         //api
 
         // axios.post
@@ -73,7 +91,7 @@ export default{
         // }) 
 
         //변수를 html에서 사용하기 위해서 return
-        return {pra, text, sum, onCopy}
+        return {pra, text, sum, onCopy, breakedtile, tile, run, count, renderComponent}
     }
 }
 </script>

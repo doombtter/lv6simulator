@@ -6,6 +6,7 @@ import __praise from "../src/components/praise"
 import __checkbox from "../src/components/checkbox"
 import __meteorbtn from "../src/components/meteorbtn"
 import __greet from "../src/components/greet"
+import __resetbtn from "../src/components/resetbtn"
 import store from "./store"
 import VueClipboard from 'vue3-clipboard'
 //vuex 설치
@@ -29,5 +30,6 @@ app.component('praise', __praise)
 app.component('checkbox', __checkbox)
 app.component('meteorbtn', __meteorbtn)
 app.component('greet', __greet)
+app.component('resetbtn', __resetbtn)
 
 app.mount("#app")

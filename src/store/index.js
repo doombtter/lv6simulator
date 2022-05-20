@@ -9,6 +9,7 @@ export default createStore({
     pra: false,
     nome: false,
     greet: false,
+    breakedtile : 0
   },
   //동일한 로직을 중앙에서 관리
   getters: {
@@ -26,6 +27,15 @@ export default createStore({
     },
     changeGreet(state) {
       state.greet = !state.greet;
+    },
+    btplus(state){
+      state.breakedtile ++
+    },
+    btminus(state){
+      state.breakedtile --
+    },
+    btreset(state){
+      state.breakedtile = 0
     }
   }
   //차이점
