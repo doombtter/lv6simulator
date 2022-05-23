@@ -7,17 +7,11 @@
 </template>
 
 <script setup>
-  //setup
-  //간결한 문법으로 상용구(boilerplate)를 줄일 수 있음
-  //타입스크립트를 사용해 props와 emmited value 선언이 가능
-  //런타임 성능의 향상(템플릿이 setup 스크립트와 같은 스코프(scope)에 있는 render 함수로 컴파일되므로 프록시가 필요없음)
-  //더 뛰어난 IDE 타입 추론 성능 (language 서버가 코드로부터 타입을 추론해내는 데 비용이 덜 든다)
   import { useStore } from 'vuex'
   const props = defineProps({
     label: String
   })
   const store = useStore();
-  //store함수 호출
   const func = () => store.commit("changePra");
 </script>
 

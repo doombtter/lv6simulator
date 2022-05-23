@@ -1,5 +1,5 @@
 <template>
-    <table class="tiletable" v-if="!gre">
+    <table class="tiletable" v-if="!gre && !pra">
         <tbody>
             <tr>
             <td :class="[(tilebreak['A' + index]) ? 'break' : 'tiletd']" v-for="(id, index) in tiles.A" v-bind:key="id + index" @click="fame('A', index)"><h4>{{timeview(id, 'A', index)}}</h4></td>
@@ -12,7 +12,7 @@
             </tr>
         </tbody>
     </table>
-    <table class="tiletable" v-if="gre">
+    <table class="tiletable" v-if="gre && !pra">
         <tbody>
             <tr>
             <td class="tiletd" v-for="id in greet.A" v-bind:key="id"><h4>{{id}}</h4></td>
@@ -22,6 +22,19 @@
             </tr>
             <tr>
             <td class="tiletd" v-for="id in greet.C" v-bind:key="id"><h4>{{id}}</h4></td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="tiletable" v-if="pra">
+        <tbody>
+            <tr>
+                <td v-for="id in ptiles.A" v-bind:key="id" v-bind:class="[(id[1] == 0) ? 'break' : (id[1] == 1) ? 'party1' : 'party2']"><h4>{{id[0]}}</h4></td>
+            </tr>
+            <tr>
+                <td v-for="id in ptiles.B" v-bind:key="id" v-bind:class="[(id[1] == 0) ? 'break' : (id[1] == 1) ? 'party1' : 'party2']"><h4>{{id[0]}}</h4></td>
+            </tr>
+            <tr>
+                <td v-for="id in ptiles.C" v-bind:key="id" v-bind:class="[(id[1] == 0) ? 'break' : (id[1] == 1) ? 'party1' : 'party2']"><h4>{{id[0]}}</h4></td>   
             </tr>
         </tbody>
     </table>
@@ -35,6 +48,7 @@ export default{
     setup(){
         const store = useStore();
         const gre = computed(() => store.state.greet);
+        const pra = computed(() => store.state.pra);
         const nome = ref(computed(() => store.state.nome))
         const breakedtile = ref(computed(()=> store.state.breakedtile))
         let tiles = ref({
@@ -45,7 +59,7 @@ export default{
             },
             B : {
                 A : 3,
-                B : 13,
+                B : 14,
                 C : 3
             },
             C : {
@@ -65,6 +79,17 @@ export default{
             CB : false, 
             CC : false,
         })
+        let intervalid = ref({
+            AA : 0,
+            AB : 0, 
+            AC : 0,
+            BA : 0,
+            BB : 0, 
+            BC : 0,
+            CA : 0,
+            CB : 0, 
+            CC : 0,
+        })
         const greet = {
             A : {
                 A : "1(노메), 2, 3",
@@ -82,13 +107,42 @@ export default{
                 C : null
             },
         }
+        const ptiles = {
+            A : {
+                A : [4, 1],
+                B : [4, 2],
+                C : [1, 1]
+            },
+            B : {
+                A : [3, 2],
+                B : [null, 0],
+                C : [1, 2]
+            },
+            C : {
+                A : [3, 1],
+                B : [2, 2], 
+                C : [2, 1]
+            },
+        }
 
         const reset = () => {
             alltimeout();
         }
 
+        const restore = (group, index) => {
+            store.commit("btminus");
+            tilebreak.value[group + '' + index] = false
+            tiles.value[group][index] = ((group + '' + index) == 'BB') ? 13 : 3
+        }
+
         const fame = (group, index) => {
             if(breakedtile.value >= 4) {
+            }
+            else if(tilebreak.value[group + '' + index]){
+                if(!nome.value && tiles.value[group][index] != 100){
+                    clearInterval(intervalid.value[group + '' + index])
+                    restore(group, index)
+                }
             }
             else if(!tilebreak.value[group + '' + index]){
                 if(nome.value){
@@ -170,8 +224,9 @@ export default{
         const breaking = (group, index) => {
             if(tiles.value[group][index] <= 0)
             {
-                tiles.value[group][index] = 5
+                tiles.value[group][index] = 100
                 let interval = setInterval(() => {
+                    intervalid.value[group + '' + index] = interval
                     if(tiles.value[group][index] === 0){
                         clearInterval(interval)
                         store.commit("btminus");
@@ -202,10 +257,8 @@ export default{
             if(tilebreak.value[group + '' + index]) return id + "초"
             else return id
         }
-        // watch(, () => {
-        // });
 
-        return {tiles, gre, greet, fame, tilebreak, timeview, breakedtile, reset}
+        return {tiles, gre, greet, fame, tilebreak, timeview, breakedtile, reset, ptiles, pra}
     }
 }
 </script>
@@ -236,5 +289,21 @@ export default{
 td h4{
     transform: rotate(315deg);
     color: black;
+}
+.party1{
+    background-color: #98FB98;
+    align-items: center;
+    width: 7rem;
+    height: 7rem;
+    cursor: pointer;
+    text-align: center;
+}
+.party2{
+    background-color: #a374db;
+    align-items: center;
+    width: 7rem;
+    height: 7rem;
+    cursor: pointer;
+    text-align: center;
 }
 </style>

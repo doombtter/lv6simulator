@@ -12,7 +12,6 @@
     label: String
   })
   const store = useStore();
-  //store함수 호출
   const func = () => store.commit("changeNome");
 </script>
 
