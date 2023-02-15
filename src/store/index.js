@@ -5,7 +5,8 @@ export default createStore({
     pra: false,
     nome: false,
     greet: false,
-    breakedtile : 0
+    breakedtile : 0,
+    diedate : new Date("2023-02-22").getDate() - new Date().getDate()
   },
   getters: {
     getstate(state){

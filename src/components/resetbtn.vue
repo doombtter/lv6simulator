@@ -1,5 +1,5 @@
 <template>
-    <input type="button" class="custom-btn btn-1" v-model="label">
+    <input type="button" class="custom-btn btn-1" v-model="props.label">
 </template>
 
 <script setup>
