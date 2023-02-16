@@ -28,9 +28,10 @@
         <h4>헬 : {{ helltotal }} 장</h4>
         <h4>엉겊 : {{ utotal }} 장</h4>
         <button class="custom-btn" @click="addRow">캐릭 추가</button>
-        <h5>당신은 N1 개의 N2 를 손해보았으며, 보석은 {{ jewel }} 를 뽑고도 남는 수치입니다.</h5>
-        <h5>총 손해본 금액을 거래소로 환산하면 대략 N4 골 입니다.</h5>
-        <h4>보상 정리</h4>
+        <h5>당신은 {{ dol }} 개의 명돌, {{ mdol }} 개의 위명돌, {{ gdol }} 개의 경명돌, {{ cdol }} 개의 찬명돌을 손해보았으며, 보석은 {{ jewel }} 레벨 보석을 뽑고도 남는 수치입니다.</h5>
+        <h5>총 손해본 금액을 거래소로 환산하면 대략 {{ gold }} 골 입니다.</h5>
+        <h5>심지어 카경은 {{ card }} 만큼이나 손해봄;;</h5>
+        <h4>보상 정리 (장당 가치는 카경 제외)</h4>
         <table>
             <thead>
                 <tr>
@@ -41,6 +42,7 @@
                   <th>경명돌</th>
                   <th>찬명돌</th>
                   <th>카경</th>
+                  <th>가치</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,7 +53,8 @@
                   <td>18</td>
                   <td></td>
                   <td></td> 
-                  <td></td> 
+                  <td></td>
+                  <td>1449</td>
                 </tr>
                 <tr>
                   <td>하드</td>
@@ -60,7 +63,8 @@
                   <td></td>
                   <td>15</td>
                   <td></td> 
-                  <td>8500</td> 
+                  <td>8500</td>
+                  <td>1428</td>  
                 </tr>
                 <tr>
                   <td>헬</td>
@@ -70,6 +74,7 @@
                   <td>26</td>
                   <td></td> 
                   <td>8500</td> 
+                  <td>1976</td> 
                 </tr>
                 <tr>
                   <td>엉겊</td>
@@ -79,6 +84,16 @@
                   <td></td>
                   <td>15</td> 
                   <td>8500</td> 
+                  <td>2835</td> 
+                </tr>
+                <tr>
+                  <td>기준가격</td>
+                  <td>16골</td>
+                  <td>9골</td>
+                  <td>16골</td>
+                  <td>28골</td>
+                  <td>93골</td> 
+                  <td></td> 
                 </tr>
             </tbody>
         </table>
@@ -143,7 +158,65 @@ import { useStore } from 'vuex'
           },
           jewel() {
             let sum = (this.ntotal * 63) + (this.htotal * 63) + (this.helltotal * 78) + (this.utotal * 90);
-            return sum;
+            return (sum >= 19683) ? 10 : (sum >= 6561) ? 9 : (sum >= 2187) ? 8 : (sum >= 729) ? 7 : (sum >= 243) ? 6 : (sum >= 81) ? 5 : (sum >= 27) ? 4 : 0;
+          },
+          dol() {
+            let sum = 0;
+            this.rows.forEach(row => {
+              sum += parseInt(row.value1);
+            });
+            return sum * 17;
+          },
+          mdol() {
+            let sum = 0;
+            this.rows.forEach(row => {
+              sum += parseInt(row.value1);
+            });
+            return sum * 18;
+          },
+          gdol() {
+            let sum = 0;
+            this.rows.forEach(row => {
+              sum += parseInt(row.value2);
+            });
+            let hsum = 0;
+            this.rows.forEach(row => {
+              hsum += parseInt(row.value3);
+            });
+            return (sum * 15) + (hsum * 26);
+          },
+          cdol() {
+            let sum = 0;
+            this.rows.forEach(row => {
+              sum += parseInt(row.value4);
+            });
+            return sum * 15;
+          },
+          card() {
+            let sum = 0;
+            this.rows.forEach(row => {
+              sum += parseInt(row.value2) + parseInt(row.value3) + parseInt(row.value4);
+            });
+            return sum * 8500;
+          },
+          gold() {
+            let sum = 0;
+            this.rows.forEach(row => {
+              sum += parseInt(row.value1);
+            });
+            let sum2 = 0;
+            this.rows.forEach(row => {
+              sum2 += parseInt(row.value2);
+            });
+            let sum3 = 0;
+            this.rows.forEach(row => {
+              sum3 += parseInt(row.value3);
+            });
+            let sum4 = 0;
+            this.rows.forEach(row => {
+              sum4 += parseInt(row.value4);
+            });
+            return (sum * 1449) + (sum2 * 1428) + (sum3 * 1976) + (sum4 * 2835);
           },
         }
       }   
